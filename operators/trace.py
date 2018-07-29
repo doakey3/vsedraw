@@ -178,7 +178,7 @@ class Trace(bpy.types.Operator):
         active_height = top - bottom
 
         selected = []
-        for strip in sorted(context.selected_sequences, key=lambda s: s.name):
+        for strip in sorted(context.selected_sequences, key=lambda s: s.frame_start):
             if not strip == active and strip.type == "SCENE":
                 selected.append(strip)
 

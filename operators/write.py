@@ -146,7 +146,7 @@ class Write(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        text = scene.tutorial_tools.text
+        text = scene.vsedraw.text
         if text == "":
             return {"FINISHED"}
         letter_folder = os.path.join(os.path.dirname(__file__), 'letters')

@@ -153,8 +153,8 @@ class VSEDrawProperties(bpy.types.PropertyGroup):
 class SeqUI(bpy.types.Panel):
     bl_space_type = "SEQUENCE_EDITOR"
     bl_region_type = "UI"
-    bl_label = "Tutorial Tools"
-    #bl_options = {"DEFAULT_CLOSED"}
+    bl_label = "vsedraw"
+    bl_options = {"DEFAULT_CLOSED"}
     bl_category = "Tools"
 
     @classmethod
@@ -210,8 +210,8 @@ class SeqUI(bpy.types.Panel):
 class View3d_UI(bpy.types.Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
-    bl_label = "Nurbs To Videos"
-    #bl_options = {"DEFAULT_CLOSED"}
+    bl_label = "vsedraw"
+    bl_options = {"DEFAULT_CLOSED"}
     bl_category = "Tools"
 
     def draw(self, context):

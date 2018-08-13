@@ -33,7 +33,7 @@ def align_camera(scene, x_max, y_max, x_min, y_min, thickness, scale):
     camera.rotation_euler[2] = 0
 
     width = glyph_width + thickness
-    height = glyph_height + thickness
+    height = glyph_height + thickness * 1.2
 
     ortho_scale = max(width, height)
 

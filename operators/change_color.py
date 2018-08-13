@@ -45,8 +45,6 @@ class ChangeColor(bpy.types.Operator):
             b = scene.vsedraw.color_picker[2]
             color = [r, g, b]
 
-        strips = context.selected_sequences
-
         all_strips = sorted(scene.sequence_editor.sequences, key=lambda x: x.frame_final_end)
 
         current_frame = scene.frame_current
@@ -54,28 +52,33 @@ class ChangeColor(bpy.types.Operator):
 
         scene.frame_current = empty_frame
 
+        strips = context.selected_sequences
+        active = scene.sequence_editor.active_strip
+
+        """
         for strip in strips:
-            curve = None
-            for modifier in strip.modifiers:
-                if modifier.type == "CURVES":
-                    if modifier.name == "invert":
-                        curve = modifier
-                        break
+            if strip.type == "META":
+                for child in strip.sequences:
+                    scene.sequence_editor.active_strip = child
+                    for modifier in child.modifiers:
+                        if modifier.type == "CURVES":
+                            if modifier.name == "color":
+                                bpy.ops.sequencer.strip_modifier_remove(name="color")
+                                break
 
-            if not curve:
-                scene.sequence_editor.active_strip = strip
-                bpy.ops.sequencer.strip_modifier_add(type='CURVES')
-                modifier = strip.modifiers[-1]
-                modifier.name = "invert"
-                curve = modifier
+                    bpy.ops.sequencer.strip_modifier_add(type="CURVES")
+                    modifier = child.modifiers[-1]
+                    modifier.name = "color"
+                    curve = modifier
 
-            red, green, blue, combo = curve.curve_mapping.curves
-            combo.points[0].location[1] = 1
-            combo.points[1].location[1] = 0
+                    red, green, blue, combo = curve.curve_mapping.curves
+                    red.points[1].location[1] = color[0]
+                    green.points[1].location[1] = color[1]
+                    blue.points[1].location[1] = color[2]
 
-
+                    curve.curve_mapping.update()
+        """
         for strip in strips:
-            scene.sequence_editor.active_strip = strip
             for modifier in strip.modifiers:
                 if modifier.type == "CURVES":
                     if modifier.name == "color":
@@ -94,5 +97,9 @@ class ChangeColor(bpy.types.Operator):
 
             curve.curve_mapping.update()
 
+
+        scene.sequence_editor.active_strip = active
+
         scene.frame_current = current_frame
+
         return {"FINISHED"}

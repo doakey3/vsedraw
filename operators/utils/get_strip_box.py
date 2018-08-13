@@ -46,8 +46,9 @@ def get_strip_box(strip):
         len_crop_y = res_y
 
         if strip.type == "SCENE":
-            len_crop_x = strip.scene.render.resolution_x
-            len_crop_y = strip.scene.render.resolution_y
+            factor = strip.scene.render.resolution_percentage / 100
+            len_crop_x = strip.scene.render.resolution_x * factor
+            len_crop_y = strip.scene.render.resolution_y * factor
         if strip.use_crop:
             len_crop_x -= (strip.crop.min_x + strip.crop.max_x)
             len_crop_y -= (strip.crop.min_y + strip.crop.max_y)

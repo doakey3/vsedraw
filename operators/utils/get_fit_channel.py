@@ -5,7 +5,7 @@ def get_fit_channel(scene, high_strip):
     """
     channel_strips = {}
     try:
-        all_strips = scene.sequence_editor.sequences_all
+        all_strips = scene.sequence_editor.sequences
     except AttributeError:
         return 1
 

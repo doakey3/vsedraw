@@ -151,21 +151,38 @@ def make_glyph_strip(old_scene, new_scene, curve_verts, channel=1):
     bpy.ops.wm.context_set_string(data_path="area.type", value="VIEW_3D")
     bpy.ops.render.render()
 
-    bpy.context.screen.scene= old_scene
+    bpy.context.screen.scene = old_scene
     bpy.ops.wm.context_set_string(data_path="area.type", value="SEQUENCE_EDITOR")
 
-    bpy.ops.sequencer.scene_strip_add(frame_start=old_scene.frame_current, channel=channel, scene=new_scene.name)
+    bpy.ops.sequencer.scene_strip_add(frame_start=old_scene.frame_current, channel=1, scene=new_scene.name)
 
     strip = old_scene.sequence_editor.active_strip
-    strip.blend_type = "ALPHA_OVER"
-    strip.use_translation = True
 
     bpy.ops.sequencer.strip_modifier_add(type='CURVES')
     curve = strip.modifiers[-1]
-    curve.name = "black"
+    curve.name = "white"
     red, green, blue, combo = curve.curve_mapping.curves
-    combo.points[0].location[1] = 0
-    combo.points[1].location[1] = 0
+    combo.points[0].location[1] = 1
+    combo.points[1].location[1] = 1
+
+    strip.use_translation = True
+
+    res_x = old_scene.render.resolution_x
+    res_y = old_scene.render.resolution_y
+
+    #bpy.ops.sequencer.meta_make()
+
+    #metastrip = old_scene.sequence_editor.active_strip
+
+    strip.blend_type = "ALPHA_OVER"
+    strip.use_translation = True
+
+    #metastrip.use_crop = True
+    #metastrip.crop.max_x = res_x - ((x_max + thickness) * 100)
+    #metastrip.crop.max_y = res_y - (y_max * 100)
+
+    strip.channel = channel
+    #metastrip.name = 'META-' + strip.name
 
     return strip
 
